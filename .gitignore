@@ -1,0 +1,3 @@
+*.code-workspace
+api/api/bin/
+api/api/obj

@@ -77,5 +77,16 @@ namespace api.Controllers
             return Ok(_mapper.Map<TicketDto>(ticket, opt => opt.Items["Username"] = ticket.AppUser.UserName));
         }
         
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteTicket([FromRoute] int id)
+        {
+            var ticket = await _ticketRepo.Delete(id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

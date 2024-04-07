@@ -62,5 +62,18 @@ namespace api.Repository
 
             return existingTicket;
         }
+
+        public async Task<TicketModel?> Delete(int id)
+        {
+            var ticket = await _context.TicketModels.FindAsync(id);
+            if (ticket == null)
+            {
+                return null;
+            }
+
+            _context.Remove(ticket);
+            _context.SaveChanges();
+            return ticket;
+        }
     }
 }

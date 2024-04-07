@@ -13,6 +13,8 @@ namespace api.Mappers
         public MappingProfile()
         {
             CreateMap<TicketCreateRequestDto, TicketModel>();
+            CreateMap<TicketModel, TicketDto>()
+            .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom((src, dest, destMember, context) => context.Items["Username"]));
         }
     }
 }

@@ -20,7 +20,7 @@ namespace api.Repository
 
         public async Task<List<TicketModel>> GetAll()
         {
-            return await _context.TicketModels.ToListAsync();
+            return await _context.TicketModels.Include(t => t.AppUser).ToListAsync();
         }
 
         public async Task<TicketModel> Create(TicketModel ticket)

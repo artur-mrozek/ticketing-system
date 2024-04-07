@@ -28,6 +28,15 @@ namespace api.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAll()
+        {
+            var tickets = await _ticketRepo.GetAll();
+            var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t, opt => opt.Items["Username"] = t.AppUser.UserName));
+            return Ok(ticketsDto);
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateTicket([FromBody] TicketCreateRequestDto ticketDto)

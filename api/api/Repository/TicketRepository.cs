@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Interfaces;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -15,6 +16,11 @@ namespace api.Repository
         public TicketRepository(ApplicationDBContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<TicketModel>> GetAll()
+        {
+            return await _context.TicketModels.ToListAsync();
         }
 
         public async Task<TicketModel> Create(TicketModel ticket)

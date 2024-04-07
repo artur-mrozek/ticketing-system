@@ -9,6 +9,7 @@ namespace api.Interfaces
     public interface ITicketRepository
     {
         public Task<List<TicketModel>> GetAll();
+        public Task<TicketModel?> GetById(int id);
         public Task<TicketModel> Create(TicketModel ticket);
     }
 }

@@ -23,11 +23,16 @@ namespace api.Repository
             return await _context.TicketModels.Include(t => t.AppUser).ToListAsync();
         }
 
+        public async Task<TicketModel?> GetById(int id)
+        {
+            return await _context.TicketModels.Include(t => t.AppUser).FirstOrDefaultAsync(t => t.Id == id);
+        }
+
         public async Task<TicketModel> Create(TicketModel ticket)
         {
             await _context.TicketModels.AddAsync(ticket);
             await _context.SaveChangesAsync();
             return ticket;
-        }
+        }  
     }
 }

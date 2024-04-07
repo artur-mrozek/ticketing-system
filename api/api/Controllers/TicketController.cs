@@ -63,6 +63,19 @@ namespace api.Controllers
                 new { id = ticketModel.Id}, 
                 _mapper.Map<TicketDto>(ticketModel, opt => opt.Items["Username"] = ticketModel.AppUser.UserName));
         }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateTicket([FromRoute] int id, [FromBody] UpdateTicketRequestDto ticketDto)
+        {
+            var ticket = await _ticketRepo.Update(id, ticketDto);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<TicketDto>(ticket, opt => opt.Items["Username"] = ticket.AppUser.UserName));
+        }
         
     }
 }

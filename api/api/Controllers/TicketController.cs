@@ -37,6 +37,18 @@ namespace api.Controllers
             return Ok(ticketsDto);
         }
 
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var ticket = await _ticketRepo.GetById(id);
+            if(ticket == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<TicketDto>(ticket, opt => opt.Items["Username"] = ticket.AppUser.UserName));
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateTicket([FromBody] TicketCreateRequestDto ticketDto)
@@ -46,7 +58,10 @@ namespace api.Controllers
             var user = await _userManager.FindByNameAsync(username);
             ticketModel.AppUser = user!;
             await _ticketRepo.Create(ticketModel);
-            return Ok();
+            return CreatedAtAction(
+                nameof(GetById), 
+                new { id = ticketModel.Id}, 
+                _mapper.Map<TicketDto>(ticketModel, opt => opt.Items["Username"] = ticketModel.AppUser.UserName));
         }
         
     }

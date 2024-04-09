@@ -32,6 +32,9 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> GetAll()
         {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
             var tickets = await _ticketRepo.GetAll();
             var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t));
             return Ok(ticketsDto);
@@ -41,6 +44,9 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
             var ticket = await _ticketRepo.GetById(id);
             if(ticket == null)
             {
@@ -53,6 +59,9 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> CreateTicket([FromBody] TicketCreateRequestDto ticketDto)
         {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
             var ticketModel = _mapper.Map<TicketModel>(ticketDto);
             var username = User.FindFirst(ClaimTypes.GivenName)!.Value;
             var user = await _userManager.FindByNameAsync(username);
@@ -69,6 +78,9 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateTicket([FromRoute] int id, [FromBody] UpdateTicketRequestDto ticketDto)
         {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
             var ticket = await _ticketRepo.Update(id, ticketDto);
             if (ticket == null)
             {
@@ -82,6 +94,9 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteTicket([FromRoute] int id)
         {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                    
             var ticket = await _ticketRepo.Delete(id);
             if (ticket == null)
             {

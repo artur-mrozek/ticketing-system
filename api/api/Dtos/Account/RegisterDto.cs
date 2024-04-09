@@ -9,11 +9,19 @@ namespace api.Dtos.Account
     public class RegisterDto
     {
         [Required]
-        public string? Username { get; set; }
+        public string Username { get; set; } = null!;
         [Required]
         [EmailAddress]
-        public string? Email { get; set; }
+        public string Email { get; set; } = null!;
         [Required]
-        public string? Password { get; set; }
+        public string PhoneNumber { get; set; } = null!;
+        [Required]
+        public string FirstName { get; set; } = null!;
+        [Required]
+        public string LastName { get; set; } = null!;
+        [Required]
+        public string Address { get; set; } = null!;
+        [Required]
+        public string Password { get; set; } = null!;
     }
 }

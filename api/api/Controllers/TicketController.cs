@@ -33,7 +33,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var tickets = await _ticketRepo.GetAll();
-            var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t, opt => opt.Items["Username"] = t.AppUser.UserName));
+            var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t));
             return Ok(ticketsDto);
         }
 
@@ -46,7 +46,7 @@ namespace api.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<TicketDto>(ticket, opt => opt.Items["Username"] = ticket.AppUser.UserName));
+            return Ok(_mapper.Map<TicketDto>(ticket));
         }
 
         [HttpPost]
@@ -61,7 +61,8 @@ namespace api.Controllers
             return CreatedAtAction(
                 nameof(GetById), 
                 new { id = ticketModel.Id}, 
-                _mapper.Map<TicketDto>(ticketModel, opt => opt.Items["Username"] = ticketModel.AppUser.UserName));
+                _mapper.Map<TicketDto>(ticketModel)
+                );
         }
 
         [HttpPut("{id}")]

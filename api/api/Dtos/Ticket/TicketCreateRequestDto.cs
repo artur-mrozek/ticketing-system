@@ -11,9 +11,9 @@ namespace api.Dtos.Ticket
     {
         [MaxLength(40, ErrorMessage = "Category cannot be over 40 characters")]
         public string Category { get; set; } = null!;
-        [MaxLength(60, ErrorMessage = "Category cannot be over 60 characters")]
+        [MaxLength(60, ErrorMessage = "Title cannot be over 60 characters")]
         public string Title { get; set; } = null!;
-        [MaxLength(2500, ErrorMessage = "Category cannot be over 2500 characters")]
+        [MaxLength(2500, ErrorMessage = "Description cannot be over 2500 characters")]
         public string Description { get; set; } = null!;
     }
 }

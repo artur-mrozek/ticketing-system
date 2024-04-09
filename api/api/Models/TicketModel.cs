@@ -11,6 +11,7 @@ namespace api.Models
         public string Category { get; set; } = null!;
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
         public string AppUserId { get; set; } = null!;
         public AppUser AppUser { get; set; } = null!;
     }

@@ -11,6 +11,7 @@ namespace api.Dtos.Ticket
         public string Category { get; set; } = null!;
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
+        public DateTime CreatedOn { get; set; } 
         public string CreatedBy { get; set; } = null!;
     }
 }

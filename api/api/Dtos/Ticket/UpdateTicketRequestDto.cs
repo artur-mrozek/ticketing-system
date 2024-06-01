@@ -14,6 +14,8 @@ namespace api.Dtos.Ticket
         public string? Title { get; set; }
         [MaxLength(2500, ErrorMessage = "Description cannot be over 2500 characters")]
         public string? Description { get; set; }
-        public bool IsDone { get; set; } = false;
+        public bool? IsDone { get; set; }
+        [RegularExpression("L1|L2|L3", ErrorMessage = "Invalid line of support")]
+        public string? Line { get; set; } 
     }
 }

@@ -57,6 +57,14 @@ namespace api.Repository
             {
                 existingTicket.Description = ticketDto.Description;
             }
+            if (ticketDto.IsDone != null)
+            {
+                existingTicket.IsDone = (bool)ticketDto.IsDone;
+            }
+            if (!string.IsNullOrWhiteSpace(ticketDto.Line))
+            {
+                existingTicket.Line = ticketDto.Line;
+            }
 
             await _context.SaveChangesAsync();
 

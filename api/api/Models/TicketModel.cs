@@ -14,5 +14,6 @@ namespace api.Models
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public string AppUserId { get; set; } = null!;
         public AppUser AppUser { get; set; } = null!;
+        public bool IsDone { get; set; }
     }
 }

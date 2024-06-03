@@ -37,6 +37,9 @@ namespace api.Controllers
 
             var tickets = await _ticketRepo.GetAll();
             var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t));
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+            var roles = await _userManager.GetRolesAsync(user!);
+            ticketsDto = ticketsDto.Where(ticket => roles.Contains(ticket.Line));
             return Ok(ticketsDto);
         }
 

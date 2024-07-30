@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dtos.Ticket;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using AutoMapper;
@@ -30,16 +31,17 @@ namespace api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if(!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-            var tickets = await _ticketRepo.GetAll();
-            var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t));
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
-            var roles = await _userManager.GetRolesAsync(user!);
-            ticketsDto = ticketsDto.Where(ticket => roles.Contains(ticket.Line));
+            var userRoles = await _userManager.GetRolesAsync(user!);
+
+            var tickets = await _ticketRepo.GetAll(query, userRoles);
+            var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t));
+            //ticketsDto = ticketsDto.Where(ticket => roles.Contains(ticket.Line));
             return Ok(ticketsDto);
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Ticket;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,15 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<TicketModel>> GetAll()
+        public async Task<List<TicketModel>> GetAll(QueryObject query, IList<string> userRoles)
         {
-            return await _context.TicketModels.Include(t => t.AppUser).ToListAsync();
+            var tickets = _context.TicketModels.Include(t => t.AppUser).AsQueryable();
+
+            tickets = tickets.Where(ticket => userRoles.Contains(ticket.Line));
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            
+            return await tickets.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<TicketModel?> GetById(int id)

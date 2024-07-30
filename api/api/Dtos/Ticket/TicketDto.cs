@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Models;
 
 namespace api.Dtos.Ticket
 {
@@ -20,5 +21,6 @@ namespace api.Dtos.Ticket
         public string Email { get; set; } = null!;
         public bool? IsDone { get; set; } = null!;
         public string Line { get; set; } = null!;
+        public string? Owner { get; set; } = null;
     }
 }

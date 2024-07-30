@@ -12,7 +12,7 @@ namespace api.Interfaces
         public Task<List<TicketModel>> GetAll();
         public Task<TicketModel?> GetById(int id);
         public Task<TicketModel> Create(TicketModel ticket);
-        public Task<TicketModel?> Update(int id, UpdateTicketRequestDto ticketDto);
+        public Task<TicketModel?> Update(int id, UpdateTicketRequestDto ticketDto, String? user);
         public Task<TicketModel?> Delete(int id);
     }
 }

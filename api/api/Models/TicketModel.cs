@@ -16,5 +16,7 @@ namespace api.Models
         public AppUser AppUser { get; set; } = null!;
         public bool IsDone { get; set; } = false;
         public string Line { get; set; } = "L1";
+        public string? Owner { get; set; } = null!;
     }
+    
 }

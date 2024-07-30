@@ -36,7 +36,7 @@ namespace api.Repository
             return ticket;
         }
 
-        public async Task<TicketModel?> Update(int id, UpdateTicketRequestDto ticketDto)
+        public async Task<TicketModel?> Update(int id, UpdateTicketRequestDto ticketDto, String? username)
         {
             var existingTicket = await _context.TicketModels.Include(t => t.AppUser).FirstOrDefaultAsync(t => t.Id == id);
 
@@ -64,6 +64,11 @@ namespace api.Repository
             if (!string.IsNullOrWhiteSpace(ticketDto.Line))
             {
                 existingTicket.Line = ticketDto.Line;
+            }
+            if (ticketDto.IsTaking == true && username != null)
+            {
+
+                existingTicket.Owner = username;
             }
 
             await _context.SaveChangesAsync();

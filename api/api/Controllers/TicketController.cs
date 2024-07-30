@@ -84,7 +84,22 @@ namespace api.Controllers
             if(!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-            var ticket = await _ticketRepo.Update(id, ticketDto);
+            TicketModel? ticket = null;
+            String? username = null;
+
+            if (ticketDto.IsTaking == true) 
+            {
+                username = User.FindFirst(ClaimTypes.GivenName)!.Value;
+                if (username != null)
+                {
+                    ticket = await _ticketRepo.Update(id, ticketDto, username);
+                }
+                
+            } else {
+                ticket = await _ticketRepo.Update(id, ticketDto, username);
+            }
+            
+            
             if (ticket == null)
             {
                 return NotFound();

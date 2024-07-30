@@ -17,5 +17,6 @@ namespace api.Dtos.Ticket
         public bool? IsDone { get; set; }
         [RegularExpression("L1|L2|L3", ErrorMessage = "Invalid line of support")]
         public string? Line { get; set; } 
+        public bool IsTaking { get; set; } = false;
     }
 }

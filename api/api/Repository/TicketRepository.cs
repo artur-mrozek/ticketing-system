@@ -64,9 +64,9 @@ namespace api.Repository
             {
                 existingTicket.Description = ticketDto.Description;
             }
-            if (ticketDto.IsDone != null)
+            if (ticketDto.IsDone == true)
             {
-                existingTicket.IsDone = (bool)ticketDto.IsDone;
+                existingTicket.IsDone = ticketDto.IsDone;
             }
             if (!string.IsNullOrWhiteSpace(ticketDto.Line))
             {

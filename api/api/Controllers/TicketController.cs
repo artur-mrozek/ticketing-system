@@ -53,10 +53,20 @@ namespace api.Controllers
                     return BadRequest(ModelState);
 
             var ticket = await _ticketRepo.GetById(id);
+            
             if(ticket == null)
             {
                 return NotFound();
             }
+
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+            var userRoles = await _userManager.GetRolesAsync(user!);
+
+            if(!userRoles.Contains(ticket.Line))
+            {
+                return StatusCode(401, "You don't have access to this ticket.");
+            }
+
             return Ok(_mapper.Map<TicketDto>(ticket));
         }
 

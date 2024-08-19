@@ -17,7 +17,8 @@ namespace api.Data
             
         }
 
-        public DbSet<TicketModel> TicketModels { get; set; } = null!;
+        public DbSet<TicketModel> TicketModels { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

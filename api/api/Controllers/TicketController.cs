@@ -39,7 +39,7 @@ namespace api.Controllers
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
             var userRoles = await _userManager.GetRolesAsync(user!);
 
-            var tickets = await _ticketRepo.GetAll(query, userRoles);
+            var tickets = await _ticketRepo.GetAll(query, userRoles, user);
             var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t));
             //ticketsDto = ticketsDto.Where(ticket => roles.Contains(ticket.Line));
             return Ok(ticketsDto);
@@ -62,12 +62,12 @@ namespace api.Controllers
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
             var userRoles = await _userManager.GetRolesAsync(user!);
 
-            if(!userRoles.Contains(ticket.Line))
+            if(userRoles.Contains(ticket.Line) || ticket.AppUser == user)
             {
-                return StatusCode(401, "You don't have access to this ticket.");
+                return Ok(_mapper.Map<TicketDto>(ticket));
             }
 
-            return Ok(_mapper.Map<TicketDto>(ticket));
+            return StatusCode(401, "You don't have access to this ticket.");
         }
 
         [HttpPost]

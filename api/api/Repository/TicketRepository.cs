@@ -20,11 +20,18 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<TicketModel>> GetAll(QueryObject query, IList<string> userRoles)
+        public async Task<List<TicketModel>> GetAll(QueryObject query, IList<string> userRoles, AppUser? user)
         {
             var tickets = _context.TicketModels.Include(t => t.AppUser).AsQueryable();
 
-            tickets = tickets.Where(ticket => userRoles.Contains(ticket.Line));
+
+            if (userRoles.Contains("L1") || userRoles.Contains("L2") || userRoles.Contains("L3"))
+            {
+                tickets = tickets.Where(ticket => userRoles.Contains(ticket.Line));
+            } else if (userRoles.Contains("User")) 
+            {
+                tickets = tickets.Where(ticket => ticket.AppUser == user);
+            }
 
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
             

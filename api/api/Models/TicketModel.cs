@@ -18,6 +18,7 @@ namespace api.Models
         public string Line { get; set; } = "L1";
         public string? Owner { get; set; } = null!;
         public int Priority { get; set; } = 4;
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
     
 }

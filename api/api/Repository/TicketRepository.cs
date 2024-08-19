@@ -77,6 +77,11 @@ namespace api.Repository
 
                 existingTicket.Owner = username;
             }
+            if (ticketDto.Priority != null)
+            {
+
+                existingTicket.Priority = (int)ticketDto.Priority;
+            }
 
             await _context.SaveChangesAsync();
 

@@ -17,6 +17,7 @@ namespace api.Models
         public bool IsDone { get; set; } = false;
         public string Line { get; set; } = "L1";
         public string? Owner { get; set; } = null!;
+        public int Priority { get; set; } = 4;
     }
     
 }

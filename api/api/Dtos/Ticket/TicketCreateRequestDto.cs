@@ -15,5 +15,7 @@ namespace api.Dtos.Ticket
         public string Title { get; set; } = null!;
         [MaxLength(2500, ErrorMessage = "Description cannot be over 2500 characters")]
         public string Description { get; set; } = null!;
+        [RegularExpression("1|2|3|4", ErrorMessage = "Invalid priority")]
+        public int Priority { get; set; } = 4;
     }
 }

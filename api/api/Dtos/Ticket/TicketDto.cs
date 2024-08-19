@@ -22,5 +22,6 @@ namespace api.Dtos.Ticket
         public bool? IsDone { get; set; } = null!;
         public string Line { get; set; } = null!;
         public string? Owner { get; set; } = null;
+        public int Priority { get; set; }
     }
 }

@@ -18,5 +18,7 @@ namespace api.Dtos.Ticket
         [RegularExpression("L1|L2|L3", ErrorMessage = "Invalid line of support")]
         public string? Line { get; set; } 
         public bool IsTaking { get; set; } = false;
+        [RegularExpression("1|2|3|4", ErrorMessage = "Invalid priority")]
+        public int? Priority { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace api.Repository
             if (userRoles.Contains("L1") || userRoles.Contains("L2") || userRoles.Contains("L3"))
             {
                 tickets = tickets.Where(ticket => userRoles.Contains(ticket.Line));
-            } else if (userRoles.Contains("User")) 
+            } else
             {
                 tickets = tickets.Where(ticket => ticket.AppUser == user);
             }

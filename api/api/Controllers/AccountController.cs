@@ -21,18 +21,21 @@ namespace api.Controllers
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signinManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IPasswordValidator<AppUser> _passwordValidator;
         public AccountController
         (
             UserManager<AppUser> userManager, 
             ITokenService tokenService, 
             SignInManager<AppUser> signinManager, 
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            IPasswordValidator<AppUser> passwordValidator
         )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signinManager = signinManager;
             _roleManager = roleManager;
+            _passwordValidator = passwordValidator;
         }
          [HttpPost("login")]
         public async Task<IActionResult> login(LoginDto loginDto)
@@ -150,8 +153,7 @@ namespace api.Controllers
             if (targetUser == null) 
                 return BadRequest("User not found");
 
-            var passwordValidator = new PasswordValidator<AppUser>();
-            var result = await passwordValidator.ValidateAsync(_userManager, targetUser, dto.NewPassword);
+            var result = await _passwordValidator.ValidateAsync(_userManager, targetUser, dto.NewPassword);
             if(!result.Succeeded) 
                 return BadRequest(result.Errors);
 

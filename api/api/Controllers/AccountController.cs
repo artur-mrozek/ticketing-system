@@ -129,9 +129,47 @@ namespace api.Controllers
 
             IdentityResult result = await _userManager.AddToRoleAsync(targetUser, dto.Role);
             if (result.Succeeded)
-                return Ok();
+                return Ok($"Added {dto.Role} to {dto.Username}");
 
             return BadRequest("Something went wrong");
+        }
+
+        [HttpPut("reset-user-password")]
+        [Authorize]
+        public async Task<IActionResult> ResetUserPassword([FromBody] ResetUserPasswordDto dto)
+        {
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+            var userRoles = await _userManager.GetRolesAsync(user!);
+            if(!userRoles.Contains("Admin"))
+                return Unauthorized("You do not have rights to perform this action");
+
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+            var targetUser = await _userManager.FindByNameAsync(dto.Username);
+            if (targetUser == null) 
+                return BadRequest("User not found");
+
+            // string resetToken = await _userManager.GeneratePasswordResetTokenAsync(targetUser);
+            // IdentityResult passwordChangeResult = await _userManager.ResetPasswordAsync(targetUser, resetToken, dto.NewPassword);
+
+            // if (passwordChangeResult.Succeeded)
+            //     return Ok($"New password set for {dto.Username}");
+
+            IdentityResult addPasswordResult;
+            IdentityResult removePasswordResult = await _userManager.RemovePasswordAsync(targetUser);
+            if (removePasswordResult.Succeeded)
+            {
+                addPasswordResult = await _userManager.AddPasswordAsync(targetUser, dto.NewPassword);
+                if (addPasswordResult.Succeeded)
+                {
+                    return Ok($"New password set for {dto.Username}"); 
+                } else {
+                    return BadRequest(addPasswordResult.Errors);
+                }
+            }
+            
+            return BadRequest("Something went wrong " + removePasswordResult.Errors);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace api.Dtos.Ticket
         public string Address { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public bool? IsDone { get; set; } = null!;
+        public string Status { get; set; } = null!;
         public string Line { get; set; } = null!;
         public string? Owner { get; set; } = null;
         public int Priority { get; set; }

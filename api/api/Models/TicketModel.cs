@@ -14,7 +14,7 @@ namespace api.Models
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public string AppUserId { get; set; } = null!;
         public AppUser AppUser { get; set; } = null!;
-        public bool IsDone { get; set; } = false;
+        public string Status { get; set; } = "Open";
         public string Line { get; set; } = "L1";
         public string? Owner { get; set; } = null!;
         public int Priority { get; set; } = 4;

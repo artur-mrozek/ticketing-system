@@ -71,9 +71,9 @@ namespace api.Repository
             {
                 existingTicket.Description = ticketDto.Description;
             }
-            if (ticketDto.IsDone == true)
+            if (!string.IsNullOrWhiteSpace(ticketDto.Status))
             {
-                existingTicket.IsDone = ticketDto.IsDone;
+                existingTicket.Status = ticketDto.Status;
             }
             if (!string.IsNullOrWhiteSpace(ticketDto.Line))
             {

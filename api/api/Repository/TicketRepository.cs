@@ -33,6 +33,11 @@ namespace api.Repository
                 tickets = tickets.Where(ticket => ticket.AppUser == user);
             }
 
+            if (!string.IsNullOrWhiteSpace(query.Status))
+            {
+                tickets = tickets.Where(ticket => ticket.Status == query.Status);
+            }
+
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
             
             return await tickets.Skip(skipNumber).Take(query.PageSize).ToListAsync();

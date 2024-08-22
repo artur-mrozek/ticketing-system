@@ -93,6 +93,11 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateTicket([FromRoute] int id, [FromBody] UpdateTicketRequestDto ticketDto)
         {
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+            var userRoles = await _userManager.GetRolesAsync(user!);
+            if(!userRoles.Contains("L1") && !userRoles.Contains("L2") && !userRoles.Contains("L3"))
+                return Unauthorized("You do not have rights to perform this action");
+
             if(!ModelState.IsValid)
                     return BadRequest(ModelState);
 
@@ -124,6 +129,11 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteTicket([FromRoute] int id)
         {
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+            var userRoles = await _userManager.GetRolesAsync(user!);
+            if(!userRoles.Contains("L1") && !userRoles.Contains("L2") && !userRoles.Contains("L3"))
+                return Unauthorized("You do not have rights to perform this action");
+                   
             if(!ModelState.IsValid)
                     return BadRequest(ModelState);
                     

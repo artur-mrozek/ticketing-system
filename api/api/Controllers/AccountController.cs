@@ -150,6 +150,11 @@ namespace api.Controllers
             if (targetUser == null) 
                 return BadRequest("User not found");
 
+            var passwordValidator = new PasswordValidator<AppUser>();
+            var result = await passwordValidator.ValidateAsync(_userManager, targetUser, dto.NewPassword);
+            if(!result.Succeeded) 
+                return BadRequest(result.Errors);
+
             IdentityResult addPasswordResult;
             IdentityResult removePasswordResult = await _userManager.RemovePasswordAsync(targetUser);
             if (removePasswordResult.Succeeded)

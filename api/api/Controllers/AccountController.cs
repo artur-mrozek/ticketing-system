@@ -150,12 +150,6 @@ namespace api.Controllers
             if (targetUser == null) 
                 return BadRequest("User not found");
 
-            // string resetToken = await _userManager.GeneratePasswordResetTokenAsync(targetUser);
-            // IdentityResult passwordChangeResult = await _userManager.ResetPasswordAsync(targetUser, resetToken, dto.NewPassword);
-
-            // if (passwordChangeResult.Succeeded)
-            //     return Ok($"New password set for {dto.Username}");
-
             IdentityResult addPasswordResult;
             IdentityResult removePasswordResult = await _userManager.RemovePasswordAsync(targetUser);
             if (removePasswordResult.Succeeded)

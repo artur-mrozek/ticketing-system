@@ -22,7 +22,7 @@ namespace api.Repository
 
         public async Task<List<TicketModel>> GetAll(QueryObject query, IList<string> userRoles, AppUser? user)
         {
-            var tickets = _context.TicketModels.Include(t => t.AppUser).AsQueryable();
+            var tickets = _context.TicketModels.Include(t => t.Comments).ThenInclude(t => t.AppUser).AsQueryable();
 
 
             if (userRoles.Contains("L1") || userRoles.Contains("L2") || userRoles.Contains("L3"))
@@ -40,7 +40,7 @@ namespace api.Repository
 
         public async Task<TicketModel?> GetById(int id)
         {
-            return await _context.TicketModels.Include(t => t.AppUser).FirstOrDefaultAsync(t => t.Id == id);
+            return await _context.TicketModels.Include(t => t.Comments).ThenInclude(t => t.AppUser).FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<TicketModel> Create(TicketModel ticket)

@@ -3,11 +3,24 @@ import {
   createBrowserRouter, 
   RouterProvider
 } from 'react-router-dom'
+import Cookies from 'js-cookie';
+import { jwtDecode } from "jwt-decode";
 import LoginPage from './pages/LoginPage';
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 
 const App = () => {
+  const getUserRoles = () => {
+    const token = Cookies.get("token")
+    if (token)
+    {
+      const decodedToken = jwtDecode(token);
+      const roles = decodedToken.Role;
+      return roles;
+    }
+
+    return [];
+  }
 
   const router = createBrowserRouter([
     {
@@ -20,7 +33,7 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: <HomePage />
+          element: <HomePage getUserRoles={getUserRoles}/>
         }
       ]
     },

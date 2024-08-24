@@ -29,7 +29,6 @@ const LoginPage = () => {
           const data = await res.json();
           const token = data.token;
           Cookies.set('token', token, { expires: 7});
-          console.log(Cookies.get("token"));
           return  navigate("/");
         } else {
             const errorResponse = await res.text();

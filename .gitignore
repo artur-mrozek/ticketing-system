@@ -2,3 +2,4 @@
 api/api/bin/
 api/api/obj
 api/api/Migrations
+frontend/ticketing-frontend/node_modules

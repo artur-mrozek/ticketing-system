@@ -3,4 +3,5 @@ api/api/bin/
 api/api/obj
 api/api/Migrations
 frontend/node_modules
+frontend/ticketing-frontend/node_modules
 frontend/ticketing-frontend/dist

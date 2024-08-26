@@ -8,6 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import LoginPage from './pages/LoginPage';
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
+import RegisterPage from './pages/RegisterPage';
 
 const App = () => {
   const getUserRoles = () => {
@@ -26,6 +27,10 @@ const App = () => {
     {
       path: "/login",
       element: <LoginPage/>
+    },
+    {
+      path: "/register",
+      element: <RegisterPage/>
     },
     {
       path: "/",

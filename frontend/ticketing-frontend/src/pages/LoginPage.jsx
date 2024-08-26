@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const LoginPage = () => {
@@ -80,7 +80,7 @@ const LoginPage = () => {
                         </button>
                         <div className="mt-4 text-center">
                             <span className="text-sm text-gray-600 mr-1">Don't have an account?</span>
-                            <a href="#" className="text-sm text-blue-600 hover:text-blue-500 font-medium">Register</a>
+                            <Link to="/register" className="text-sm text-blue-600 hover:text-blue-500 font-medium">Register</Link>
                         </div>
                     </form>
                 </div>

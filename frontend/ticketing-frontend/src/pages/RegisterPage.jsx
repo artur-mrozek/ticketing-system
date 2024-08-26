@@ -43,7 +43,7 @@ const RegisterPage = () => {
         else if(res.status == 500) {
               const errorResponse = "Password doesn't match requirements";
               setErrorState(errorResponse);
-              console.log(errorResponse);
+              //console.log(errorResponse);
             } 
         else if (res.status == 400) {
               const errorResponseJson = await res.json();
@@ -174,9 +174,7 @@ const RegisterPage = () => {
             </div>
           </div>
         {Array.isArray(errorState)
-            ? errorState.map(error => <p className="mb-5 text-red-500 font-medium">
-                {error}
-            </p>)
+            ? errorState.map(error => <p className="mb-5 text-red-500 font-medium">{error}</p>)
             : <p className="mb-5 text-red-500 font-medium">{errorState}</p>}
         
         <button

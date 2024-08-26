@@ -10,43 +10,38 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
 
-    const loginUser = async() => {
-        try {
-          const res = await fetch("/api/account/login",
-            {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "username": username,
-                    "password": password
-                }),
-            }
-        );
-        if(res.ok)
-        {
-          const data = await res.json();
-          const token = data.token;
-          Cookies.set('token', token, { expires: 7});
-          return  navigate("/");
-        } else {
-            const errorResponse = await res.text();
-            setErrorState(errorResponse);
-            console.log(errorResponse);
-        }
-        
-        } catch (error) {
-          console.log(error);
-        }
-        
-        return;
-    }
-
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
-        loginUser()
-        return;
+        try {
+            const res = await fetch("/api/account/login",
+              {
+                  method: "POST",
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      "username": username,
+                      "password": password
+                  }),
+              }
+          );
+          if(res.ok)
+          {
+            const data = await res.json();
+            const token = data.token;
+            Cookies.set('token', token, { expires: 7});
+            return  navigate("/");
+          } else {
+              const errorResponse = await res.text();
+              setErrorState(errorResponse);
+              console.log(errorResponse);
+          }
+          
+          } catch (error) {
+            console.log(error);
+          }
+          
+          return;
     }
 
     return (

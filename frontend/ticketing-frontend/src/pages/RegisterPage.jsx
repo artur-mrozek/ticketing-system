@@ -11,13 +11,19 @@ const RegisterPage = () => {
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorState, setErrorState] = useState("");
 
   const navigate = useNavigate();
 
   const submitForm = async (e) => {
     e.preventDefault();
+
     try {
+      if (password != confirmPassword){
+        setErrorState("");
+        return;
+      }
         const res = await fetch("api/account/register", {
             method: "POST",
             headers: {
@@ -173,6 +179,27 @@ const RegisterPage = () => {
               </div>
             </div>
           </div>
+          <div className="mb-6 relative">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Confirm Password
+            </label>
+            <div className="flex items-center">
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                required
+                value={confirmPassword}
+                onChange={(e) => {setConfirmPassword(e.target.value)}}
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+        {password != confirmPassword 
+          ? <p className="mb-5 text-red-500 font-medium">Passwords does not match.</p>
+          : ""
+        }
+        
         {Array.isArray(errorState)
             ? errorState.map(error => <p className="mb-5 text-red-500 font-medium">{error}</p>)
             : <p className="mb-5 text-red-500 font-medium">{errorState}</p>}

@@ -24,7 +24,7 @@ const HomePage = ({getUserRoles}) => {
     } else 
     {
       return (
-        <div className="bg-gray-100 min-h-screen flex flex-col items-center">
+        <div className="bg-gray-100 min-h-screen flex flex-col items-center pt-16">
           <h1 className="text-3xl font-bold text-gray-800 mt-8 mb-6">Select a Technical Support Category</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl px-4">
             {categories.map((category, index) => (

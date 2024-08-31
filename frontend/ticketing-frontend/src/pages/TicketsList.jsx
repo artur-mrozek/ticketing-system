@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
+import Spinner from '../components/Spinner';
 
 const TicketsList = () => {
     const [tickets, setTickets] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
     useEffect(() => {
         const fetchTickets = async () => {
         try {
@@ -20,6 +23,8 @@ const TicketsList = () => {
             setTickets(data);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     }
     fetchTickets();
@@ -28,6 +33,9 @@ const TicketsList = () => {
       return (
         <div className="bg-gray-100 min-h-screen p-8 pt-24">
           <h1 className="text-3xl font-bold text-gray-800 mb-6">Tickets List</h1>
+          {loading
+              ? <Spinner loading={loading} />
+              :
           <div className="bg-white shadow-md rounded-lg overflow-x-auto">
             <table className="min-w-full table-auto">
               <thead className="bg-blue-600 text-white">
@@ -68,6 +76,7 @@ const TicketsList = () => {
               </tbody>
             </table>
           </div>
+          }
         </div>
       );
 }

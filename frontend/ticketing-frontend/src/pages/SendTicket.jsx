@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const SendTicket = () => {
@@ -11,6 +11,7 @@ const SendTicket = () => {
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
     const [errorState, setErrorState] = useState([]);
+    const navigate = useNavigate();
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -42,6 +43,7 @@ const SendTicket = () => {
         } catch (error) {
             console.log(error);
         }
+        navigate("/my-tickets")
         return;
       };
 

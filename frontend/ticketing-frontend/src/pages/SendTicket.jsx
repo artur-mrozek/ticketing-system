@@ -10,6 +10,7 @@ const SendTicket = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
+    const [errorState, setErrorState] = useState([]);
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -29,7 +30,15 @@ const SendTicket = () => {
                     })
                 }
             )
-            console.log(res);
+            if (!res.ok){
+              const errorResponseJson = await res.json();
+              const errorsJson = errorResponseJson.errors;
+              var errors = [];
+              for (var errorKey in errorsJson) {
+                  errors.push(`${errorsJson[errorKey]}`);
+              }
+              setErrorState(errors);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -67,6 +76,7 @@ const SendTicket = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
+                  maxLength={60}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -81,6 +91,7 @@ const SendTicket = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
+                  maxLength={2500}
                   className="resize-none mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   rows="4"
                 />
@@ -105,6 +116,8 @@ const SendTicket = () => {
                   <option value="4">4 - Critical</option>
                 </select>
               </div>
+
+              {errorState.map(error => <p className="mb-5 text-red-500 font-medium">{error}</p>)}
     
               <button
                 type="submit"

@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 import RegisterPage from './pages/RegisterPage';
+import SendTicket from './pages/SendTicket';
 
 const App = () => {
   const getUserRoles = () => {
@@ -39,6 +40,10 @@ const App = () => {
         {
           path: "/",
           element: <HomePage getUserRoles={getUserRoles}/>
+        },
+        {
+          path: "/send-ticket",
+          element: <SendTicket />
         }
       ]
     },

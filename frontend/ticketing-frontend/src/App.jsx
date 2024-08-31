@@ -34,7 +34,7 @@ const App = () => {
     },
     {
       path: "/",
-      element: <MainLayout />,
+      element: <MainLayout getUserRoles={getUserRoles}/>,
       children: [
         {
           path: "/",

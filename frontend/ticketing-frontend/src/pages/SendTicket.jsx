@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 const SendTicket = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -43,6 +44,7 @@ const SendTicket = () => {
         } catch (error) {
             console.log(error);
         }
+        toast.success('Ticket sent successfully!');
         navigate("/my-tickets")
         return;
       };

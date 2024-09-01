@@ -23,7 +23,7 @@ const NavBar = ({getUserRoles}) => {
           ?
             ""
           :
-            <Link to="/my-tickets" className="text-white text-lg font-semibold hover:bg-blue-700 px-3 py-2 rounded-md">
+            <Link to="/tickets" className="text-white text-lg font-semibold hover:bg-blue-700 px-3 py-2 rounded-md">
                 My Tickets
             </Link>
           }

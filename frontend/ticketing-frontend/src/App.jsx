@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage';
 import RegisterPage from './pages/RegisterPage';
 import SendTicket from './pages/SendTicket';
 import TicketsList from './pages/TicketsList';
+import TicketDetailsPage from './pages/TicketDetailsPage';
 
 const App = () => {
   const getUserRoles = () => {
@@ -47,8 +48,12 @@ const App = () => {
           element: <SendTicket />
         },
         {
-          path: "/my-tickets",
+          path: "/tickets",
           element: <TicketsList />
+        },
+        {
+          path: "/ticket/:id",
+          element: <TicketDetailsPage />
         }
       ]
     },

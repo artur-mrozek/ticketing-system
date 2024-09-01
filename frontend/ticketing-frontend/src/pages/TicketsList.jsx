@@ -51,7 +51,7 @@ const TicketsList = ({convertDateTime}) => {
                 </tr>
               </thead>
               <tbody>
-                {tickets.toReversed().map((ticket) => (
+                {tickets.map((ticket) => (
                   <tr onClick={() => {navigate(`/ticket/${ticket.id}`)}} key={ticket.id} className="text-center hover:bg-gray-100 cursor-pointer">
                     <td className="border px-4 py-2">{ticket.id}</td>
                     <td className="border px-4 py-2">{ticket.category}</td>

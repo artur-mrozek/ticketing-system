@@ -39,6 +39,8 @@ namespace api.Repository
             }
 
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            tickets = tickets.OrderByDescending(o => o.CreatedOn);
             
             return await tickets.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }

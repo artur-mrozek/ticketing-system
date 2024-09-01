@@ -26,6 +26,18 @@ const App = () => {
     return [];
   }
 
+  const getUsername = () => {
+    const token = Cookies.get("token")
+    if (token)
+    {
+      const decodedToken = jwtDecode(token);
+      const username = decodedToken.given_name;
+      return username;
+    }
+
+    return "";
+  }
+
   const convertDateTime = (dateTimeString) => {
     const date = new Date(dateTimeString);
 
@@ -70,7 +82,7 @@ const App = () => {
         },
         {
           path: "/ticket/:id",
-          element: <TicketDetailsPage convertDateTime={convertDateTime} />
+          element: <TicketDetailsPage convertDateTime={convertDateTime} getUserRoles={getUserRoles} getUsername={getUsername}/>
         }
       ]
     },

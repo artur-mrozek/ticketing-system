@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import TicketDetails from '../components/TicketDetails';
 import Comments from '../components/Comments';
 
-const TicketDetailsPage = ({convertDateTime}) => {
+const TicketDetailsPage = ({convertDateTime, getUserRoles, getUsername}) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [ticket, setTicket] = useState([]);
@@ -44,8 +44,16 @@ const TicketDetailsPage = ({convertDateTime}) => {
         Back
       </button>
 
-      <TicketDetails ticket={ticket} convertDateTime={convertDateTime}/>
-      <Comments ticket={ticket} fetchTicket={fetchTicket} convertDateTime={convertDateTime}/>
+      <TicketDetails 
+        ticket={ticket} 
+        convertDateTime={convertDateTime} 
+        getUserRoles={getUserRoles} 
+        fetchTicket={fetchTicket} 
+        getUsername={getUsername} />
+      <Comments 
+        ticket={ticket} 
+        fetchTicket={fetchTicket} 
+        convertDateTime={convertDateTime} />
     </div>
   );
 }

@@ -1,6 +1,33 @@
 import React from 'react'
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
-const TicketDetails = ({ticket, convertDateTime}) => {
+const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getUsername}) => {
+  const userRoles = getUserRoles();
+  const username = getUsername();
+  console.log(username);
+
+  const takeTicket = async () => {
+    try {
+      const res = await fetch(`/api/ticket/${ticket.id}`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get("token")}`
+      },
+      body: JSON.stringify({
+        "isTaking": true
+        })
+      })
+      if (res.ok) {
+        fetchTicket();
+        toast.success("You took the ticket succesfully!")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Ticket Details</h1>
@@ -23,12 +50,20 @@ const TicketDetails = ({ticket, convertDateTime}) => {
         </div>
 
         {/* Przycisk Edit oraz Take */}
-        
-        <div className="mt-6 flex space-x-4">
-          <button className="bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
-          <button className="bg-green-600 text-white px-4 py-2 rounded">Take</button>
-          <button className="bg-red-600 text-white px-4 py-2 rounded">Escalate</button>
-        </div>
+        {userRoles.includes("L1") || userRoles.includes("L2") || userRoles.includes("L3")
+        ?(
+          <div className="mt-6 flex space-x-4">
+            <button className="bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
+            {username == ticket.owner 
+            ?
+              <button disabled onClick={() => {takeTicket()}} className="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed ">Take</button>
+            :
+              <button  onClick={() => {takeTicket()}} className="bg-green-600 text-white px-4 py-2 rounded">Take</button>
+            }
+            <button className="bg-red-600 text-white px-4 py-2 rounded">Escalate</button>
+          </div>
+        )
+        : ""}
       </div>
   )
 }

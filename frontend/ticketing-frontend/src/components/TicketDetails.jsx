@@ -1,8 +1,10 @@
 import React from 'react'
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getUsername}) => {
+  const navigate = useNavigate();
   const userRoles = getUserRoles();
   const username = getUsername();
   console.log(username);
@@ -22,6 +24,34 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
       if (res.ok) {
         fetchTicket();
         toast.success("You took the ticket succesfully!")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const escalateTicket = async () => {
+    let newTicketLine;
+    if (ticket.line == "L1") {
+      newTicketLine = "L2";
+    }
+    if (ticket.line == "L2") {
+      newTicketLine = "L3";
+    }
+    try {
+      const res = await fetch(`/api/ticket/${ticket.id}`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get("token")}`
+        },
+        body: JSON.stringify({
+          "line": newTicketLine
+        })
+      })
+      if (res.ok) {
+        navigate("/tickets");
+        toast.success(`Ticket escalated to ${newTicketLine} support!`);
       }
     } catch (error) {
       console.log(error);
@@ -56,11 +86,16 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
             <button className="bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
             {username == ticket.owner 
             ?
-              <button disabled onClick={() => {takeTicket()}} className="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed ">Take</button>
+              <button disabled className="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">Take</button>
             :
               <button  onClick={() => {takeTicket()}} className="bg-green-600 text-white px-4 py-2 rounded">Take</button>
             }
-            <button className="bg-red-600 text-white px-4 py-2 rounded">Escalate</button>
+            {ticket.line == "L3"
+            ?
+              <button disabled className="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">Escalate</button>
+            :
+              <button onClick={() => {escalateTicket()}} className="bg-red-600 text-white px-4 py-2 rounded">Escalate</button>
+            }
           </div>
         )
         : ""}

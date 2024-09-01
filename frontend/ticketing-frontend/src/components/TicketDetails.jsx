@@ -7,7 +7,6 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
   const navigate = useNavigate();
   const userRoles = getUserRoles();
   const username = getUsername();
-  console.log(username);
 
   const takeTicket = async () => {
     try {

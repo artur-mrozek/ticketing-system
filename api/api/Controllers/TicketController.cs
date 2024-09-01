@@ -54,6 +54,7 @@ namespace api.Controllers
 
             var ticket = await _ticketRepo.GetById(id);
             
+            
             if(ticket == null)
             {
                 return NotFound();

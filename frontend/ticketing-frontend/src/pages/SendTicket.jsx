@@ -45,7 +45,7 @@ const SendTicket = () => {
             console.log(error);
         }
         toast.success('Ticket sent successfully!');
-        navigate("/my-tickets")
+        navigate("/tickets")
         return;
       };
 

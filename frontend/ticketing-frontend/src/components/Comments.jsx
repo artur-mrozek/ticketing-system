@@ -40,7 +40,7 @@ const Comments = ({ticket, fetchTicket, convertDateTime}) => {
             <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-sm">
             <div><strong>Username:</strong> {comment.username}</div>
             <div><strong>Created On:</strong> {convertDateTime(comment.createdOn)}</div>
-            <div><strong>Content:</strong> {comment.content}</div>
+            <div className='break-words'><strong>Content:</strong> {comment.content}</div>
             </div>
         ))
     :

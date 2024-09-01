@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import TicketDetails from '../components/TicketDetails';
 import Comments from '../components/Comments';
 
-const TicketDetailsPage = () => {
+const TicketDetailsPage = ({convertDateTime}) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [ticket, setTicket] = useState([]);
@@ -44,8 +44,8 @@ const TicketDetailsPage = () => {
         Back
       </button>
 
-      <TicketDetails ticket={ticket} />
-      <Comments ticket={ticket} fetchTicket={fetchTicket}/>
+      <TicketDetails ticket={ticket} convertDateTime={convertDateTime}/>
+      <Comments ticket={ticket} fetchTicket={fetchTicket} convertDateTime={convertDateTime}/>
     </div>
   );
 }

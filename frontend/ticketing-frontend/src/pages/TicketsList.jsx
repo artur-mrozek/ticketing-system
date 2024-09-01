@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Spinner from '../components/Spinner';
 
-const TicketsList = () => {
+const TicketsList = ({convertDateTime}) => {
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -56,7 +56,7 @@ const TicketsList = () => {
                     <td className="border px-4 py-2">{ticket.id}</td>
                     <td className="border px-4 py-2">{ticket.category}</td>
                     <td className="border px-4 py-2">{ticket.title}</td>
-                    <td className="border px-4 py-2">{ticket.createdOn}</td>
+                    <td className="border px-4 py-2">{convertDateTime(ticket.createdOn)}</td>
                     <td className="border px-4 py-2">{ticket.userName}</td>
                     <td
                       className={`border px-4 py-2 ${

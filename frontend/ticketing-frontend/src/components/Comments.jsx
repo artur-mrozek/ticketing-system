@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-const Comments = ({ticket, fetchTicket}) => {
+const Comments = ({ticket, fetchTicket, convertDateTime}) => {
     const {id} = useParams();
     const [newComment, setNewComment] = useState("");
 
@@ -39,7 +39,7 @@ const Comments = ({ticket, fetchTicket}) => {
         ticket.comments.toReversed().map((comment, index) => (
             <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-sm">
             <div><strong>Username:</strong> {comment.username}</div>
-            <div><strong>Created On:</strong> {comment.createdOn}</div>
+            <div><strong>Created On:</strong> {convertDateTime(comment.createdOn)}</div>
             <div><strong>Content:</strong> {comment.content}</div>
             </div>
         ))

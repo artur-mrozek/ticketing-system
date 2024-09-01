@@ -26,6 +26,23 @@ const App = () => {
     return [];
   }
 
+  const convertDateTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+
+    // Pobierz poszczególne części daty i czasu
+    const day = String(date.getDate()).padStart(2, '0'); // Dzień
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Miesiąc (getMonth zwraca 0-11, więc trzeba dodać 1)
+    const year = date.getFullYear(); // Rok
+
+    const hours = String(date.getHours()).padStart(2, '0'); // Godzina
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // Minuty
+
+    // Zbuduj nowy ciąg w formacie "DD-MM-RRRR HH:MM"
+    const formattedDateTime = `${day}.${month}.${year} ${hours}:${minutes}`;
+
+    return formattedDateTime;
+  }
+
   const router = createBrowserRouter([
     {
       path: "/login",
@@ -49,11 +66,11 @@ const App = () => {
         },
         {
           path: "/tickets",
-          element: <TicketsList />
+          element: <TicketsList convertDateTime={convertDateTime}/>
         },
         {
           path: "/ticket/:id",
-          element: <TicketDetailsPage />
+          element: <TicketDetailsPage convertDateTime={convertDateTime} />
         }
       ]
     },

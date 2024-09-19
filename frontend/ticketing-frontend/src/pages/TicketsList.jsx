@@ -14,7 +14,7 @@ const TicketsList = ({convertDateTime}) => {
     useEffect(() => {
         const fetchTickets = async () => {
         try {
-            if (lineParam != ""){
+            if (lineParam == "L1" || lineParam == "L2" || lineParam == "L3"){
             const res = await fetch(`api/ticket?Line=${lineParam}`,{
                 method: "GET",
                 headers: {
@@ -26,7 +26,16 @@ const TicketsList = ({convertDateTime}) => {
             const data = await res.json();
             setTickets(data);
           } else {
-            return "Error fetching data"
+            const res = await fetch(`api/ticket`,{
+              method: "GET",
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${Cookies.get("token")}`
+              }
+          })
+      
+          const data = await res.json();
+          setTickets(data);
           }
         } catch (error) {
             console.log(error);

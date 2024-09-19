@@ -38,7 +38,7 @@ const TicketDetailsPage = ({convertDateTime, getUserRoles, getUsername}) => {
       {/* Przycisk Wstecz */}
       <button 
         className="text-blue-600 flex items-center mb-4"
-        onClick={() => navigate("/tickets")}
+        onClick={() => navigate(-1)}
       >
         <FaArrowLeft className="mr-2" size={24} /> {/* Ikona strzałki */}
         Back

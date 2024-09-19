@@ -49,7 +49,7 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
         })
       })
       if (res.ok) {
-        navigate("/tickets");
+        navigate(-1);
         toast.success(`Ticket escalated to ${newTicketLine} support!`);
       }
     } catch (error) {

@@ -87,7 +87,7 @@ const App = () => {
         },
         {
           path: "/edit-ticket/:id",
-          element: <EditTicket />
+          element: <EditTicket getUserRoles={getUserRoles}/>
         }
       ]
     },

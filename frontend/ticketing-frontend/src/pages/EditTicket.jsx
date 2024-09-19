@@ -4,7 +4,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 
-const EditTicket = () => {
+
+const EditTicket = ({ getUserRoles }) => {
+    const userRoles = getUserRoles();
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const [ticket, setTicket] = useState([]);
     const [category, setCategory] = useState("");
@@ -12,7 +16,6 @@ const EditTicket = () => {
     const [description, setDescription] = useState("");
     const [priority, setPriority] = useState("");
     const [errorState, setErrorState] = useState([]);
-    const navigate = useNavigate();
 
     const categories = [
         'Software Issues',
@@ -45,6 +48,11 @@ const EditTicket = () => {
     }
     
     useEffect(() => {
+      if(!userRoles.includes("L1") && !userRoles.includes("L2") && !userRoles.includes("L3"))
+        {
+          navigate("/");
+          return;
+        }
       fetchTicket();
     },[])
 

@@ -19,7 +19,41 @@ const HomePage = ({getUserRoles}) => {
     if(userRoles.includes("L1") || userRoles.includes("L2") || userRoles.includes("L3"))
     {
       return (
-      <div>support</div>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md text-center">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-6">Select a Support Queue</h1>
+          
+          <div className="space-y-4">
+            {/* Line 1 */}
+            {userRoles.includes("L1") ?
+            <button 
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+              onClick={() => {navigate("/tickets?Line=L1")}}
+            >
+              Line 1
+            </button>
+            : "" }
+            {/* Line 2 */}
+            {userRoles.includes("L2") ?
+            <button 
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+              onClick={() => {navigate("/tickets?Line=L2")}}
+            >
+              Line 2
+            </button>
+            : ""}
+            {/* Line 3 */}
+            {userRoles.includes("L3") ?
+            <button 
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+              onClick={() => {navigate("/tickets?Line=L3")}}
+            >
+              Line 3
+            </button>
+            : ""}
+          </div>
+        </div>
+      </div>
       );
     } else 
     {

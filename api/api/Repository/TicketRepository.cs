@@ -38,6 +38,11 @@ namespace api.Repository
                 tickets = tickets.Where(ticket => ticket.Status == query.Status);
             }
 
+            if (!string.IsNullOrWhiteSpace(query.Line))
+            {
+                tickets = tickets.Where(ticket => ticket.Line == query.Line);
+            }
+
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
 
             tickets = tickets.OrderByDescending(o => o.CreatedOn);

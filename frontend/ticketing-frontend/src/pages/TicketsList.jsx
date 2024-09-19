@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Spinner from '../components/Spinner';
@@ -7,20 +7,27 @@ import Spinner from '../components/Spinner';
 const TicketsList = ({convertDateTime}) => {
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const lineParam = searchParams.get("Line");
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTickets = async () => {
         try {
-            const res = await fetch("api/ticket",{
+            if (lineParam != ""){
+            const res = await fetch(`api/ticket?Line=${lineParam}`,{
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${Cookies.get("token")}`
                 }
             })
+        
             const data = await res.json();
             setTickets(data);
+          } else {
+            return "Error fetching data"
+          }
         } catch (error) {
             console.log(error);
         } finally {

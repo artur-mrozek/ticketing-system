@@ -1,25 +1,69 @@
 import React from 'react'
-import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 
-const SendTicket = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const categoryParam = searchParams.get("category");
-    const [category, setCategory] = useState(categoryParam);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [priority, setPriority] = useState('');
+const EditTicket = () => {
+    const { id } = useParams();
+    const [ticket, setTicket] = useState([]);
+    const [category, setCategory] = useState("");
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [priority, setPriority] = useState("");
     const [errorState, setErrorState] = useState([]);
     const navigate = useNavigate();
 
-    const submitForm = async (e) => {
+    const categories = [
+        'Software Issues',
+        'Hardware Malfunctions',
+        'Network Connectivity',
+        'Password Reset',
+        'Security Breach',
+        'Performance Issues',
+        'System Updates',
+        'Data Backup & Recovery',
+        'User Access Management'
+      ];
+
+    const fetchTicket = async () => {
+        try {
+            const res = await fetch(`/api/ticket/${id}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${Cookies.get("token")}`
+                }
+            })
+            if (res.ok) {
+                const data = await res.json();
+                setTicket(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    useEffect(() => {
+      fetchTicket();
+    },[])
+
+    useEffect(() => {
+        // Ustawia wartości pól formularza po pobraniu ticketa
+        if (ticket) {
+            setCategory(ticket.category || '');
+            setTitle(ticket.title || '');
+            setDescription(ticket.description || '');
+            setPriority(ticket.priority || '');
+        }
+    }, [ticket]);
+
+      const submitForm = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch("/api/ticket",
+            const res = await fetch(`/api/ticket/${id}`,
                 {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${Cookies.get("token")}`
@@ -40,36 +84,34 @@ const SendTicket = () => {
                   errors.push(`${errorsJson[errorKey]}`);
               }
               setErrorState(errors);
-              return;
+              return
             }
-            toast.success('Ticket sent successfully!');
-            const data = await res.json();
-            const ticketId = data.id;
-            navigate(`/ticket/${ticketId}`)
+            toast.success('Ticket edited successfully!');
+            navigate(-1)
             return;
         } catch (error) {
             console.log(error);
-        }
+        } 
       };
-
     return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center pt-16">
           <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Submit a Ticket</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Edit a Ticket</h2>
             <form onSubmit={submitForm}>
                 <div className="mb-4">
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                     Category
                 </label>
-                <input
+                <select
                     type="text"
                     id="category"
                     name="category"
-                    value={category}
+                    value={category || ""}
                     onChange={(e) => setCategory(e.target.value)}
-                    disabled
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-200"
-                />
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                >
+                    {categories.map(category => <option value={category}>{category}</option>)}
+                    </select>
                 </div>
     
               <div className="mb-4">
@@ -80,7 +122,7 @@ const SendTicket = () => {
                   type="text"
                   id="title"
                   name="title"
-                  value={title}
+                  value={title || ""}
                   onChange={(e) => setTitle(e.target.value)}
                   required
                   maxLength={60}
@@ -95,7 +137,7 @@ const SendTicket = () => {
                 <textarea
                   id="description"
                   name="description"
-                  value={description}
+                  value={description || ""}
                   onChange={(e) => setDescription(e.target.value)}
                   required
                   maxLength={2500}
@@ -111,7 +153,7 @@ const SendTicket = () => {
                 <select
                   id="priority"
                   name="priority"
-                  value={priority}
+                  value={priority || ""}
                   onChange={(e) => setPriority(e.target.value)}
                   required
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -130,7 +172,7 @@ const SendTicket = () => {
                 type="submit"
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
-                Submit Ticket
+                Edit Ticket
               </button>
             </form>
           </div>
@@ -138,4 +180,4 @@ const SendTicket = () => {
       );
 }
 
-export default SendTicket
+export default EditTicket

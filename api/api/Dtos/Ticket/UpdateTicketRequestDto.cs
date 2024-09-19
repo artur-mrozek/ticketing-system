@@ -9,6 +9,7 @@ namespace api.Dtos.Ticket
     public class UpdateTicketRequestDto
     {
         [MaxLength(40, ErrorMessage = "Category cannot be over 40 characters")]
+        [RegularExpression("Software Issues|Hardware Malfunctions|Network Connectivity|Password Reset|Security Breach|Performance Issues|System Updates|Data Backup & Recovery|User Access Management", ErrorMessage = "Invalid category")]
         public string? Category { get; set; }
         [MaxLength(60, ErrorMessage = "Title cannot be over 60 characters")]
         public string? Title { get; set; }

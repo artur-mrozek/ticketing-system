@@ -63,8 +63,8 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div><strong>ID:</strong> {ticket.id}</div>
           <div><strong>Category:</strong> {ticket.category}</div>
-          <div><strong>Title:</strong> {ticket.title}</div>
-          <div><strong>Description:</strong> {ticket.description}</div>
+          <div className='break-words'><strong>Title:</strong> {ticket.title}</div>
+          <div className='break-words'><strong>Description:</strong> {ticket.description}</div>
           <div><strong>Created On:</strong> {convertDateTime(ticket.createdOn)}</div>
           <div><strong>Username:</strong> {ticket.userName}</div>
           <div><strong>First Name:</strong> {ticket.firstName}</div>
@@ -82,7 +82,7 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
         {userRoles.includes("L1") || userRoles.includes("L2") || userRoles.includes("L3")
         ?(
           <div className="mt-6 flex space-x-4">
-            <button className="bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
+            <button onClick={() => navigate(`/edit-ticket/${ticket.id}`)} className="bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
             {username == ticket.owner 
             ?
               <button disabled className="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">Take</button>

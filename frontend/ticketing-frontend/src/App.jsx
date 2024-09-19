@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage';
 import SendTicket from './pages/SendTicket';
 import TicketsList from './pages/TicketsList';
 import TicketDetailsPage from './pages/TicketDetailsPage';
+import EditTicket from './pages/EditTicket';
 
 const App = () => {
   const getUserRoles = () => {
@@ -83,6 +84,10 @@ const App = () => {
         {
           path: "/ticket/:id",
           element: <TicketDetailsPage convertDateTime={convertDateTime} getUserRoles={getUserRoles} getUsername={getUsername}/>
+        },
+        {
+          path: "/edit-ticket/:id",
+          element: <EditTicket />
         }
       ]
     },

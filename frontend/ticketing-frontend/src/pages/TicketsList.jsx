@@ -48,7 +48,15 @@ const TicketsList = ({convertDateTime}) => {
     
       return (
         <div className="bg-gray-100 min-h-screen p-8 pt-24">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Tickets List</h1>
+          {lineParam == "L1" ?
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Line 1 Tickets List</h1>
+          : lineParam == "L2" ?
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Line 2 Tickets List</h1>
+          : lineParam == "L3" ?
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Line 3 Tickets List</h1>
+          : <h1 className="text-3xl font-bold text-gray-800 mb-6">Tickets List</h1>
+          }
+          
           {loading
               ? <Spinner loading={loading} />
               :

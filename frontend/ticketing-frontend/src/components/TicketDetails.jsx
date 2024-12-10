@@ -59,24 +59,30 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Ticket Details</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div><strong>ID:</strong> {ticket.id}</div>
-          <div><strong>Category:</strong> {ticket.category}</div>
-          <div className='break-words'><strong>Title:</strong> {ticket.title}</div>
-          <div className='break-words'><strong>Description:</strong> {ticket.description}</div>
-          <div><strong>Created On:</strong> {convertDateTime(ticket.createdOn)}</div>
+      <h1 className="text-3xl font-bold text-gray-800 mb-4">Ticket Details</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {/* Pierwsza kolumna */}
+        <div className='space-y-3'>
           <div><strong>Username:</strong> {ticket.userName}</div>
           <div><strong>First Name:</strong> {ticket.firstName}</div>
           <div><strong>Last Name:</strong> {ticket.lastName}</div>
           <div><strong>Address:</strong> {ticket.address}</div>
           <div><strong>Phone Number:</strong> {ticket.phoneNumber}</div>
           <div><strong>Email:</strong> {ticket.email}</div>
+        </div>
+        {/* Druga kolumna */}
+        <div className='space-y-3'>
+          <div><strong>ID:</strong> {ticket.id}</div>
+          <div><strong>Category:</strong> {ticket.category}</div>
+          <div className='break-words'><strong>Title:</strong> {ticket.title}</div>
+          <div className='break-words'><strong>Description:</strong> {ticket.description}</div>
+          <div><strong>Created On:</strong> {convertDateTime(ticket.createdOn)}</div>
           <div><strong>Status:</strong> {ticket.status}</div>
           <div><strong>Line:</strong> {ticket.line}</div>
-          <div><strong>Owner:</strong> {ticket.owner}</div>
           <div><strong>Priority:</strong> {ticket.priority}</div>
+          <div><strong>Owner:</strong> {ticket.owner}</div>
         </div>
+      </div>
 
         {/* Przycisk Edit oraz Take */}
         {userRoles.includes("L1") || userRoles.includes("L2") || userRoles.includes("L3")

@@ -13,6 +13,7 @@ import SendTicket from './pages/SendTicket';
 import TicketsList from './pages/TicketsList';
 import TicketDetailsPage from './pages/TicketDetailsPage';
 import EditTicket from './pages/EditTicket';
+import AdminPanel from './pages/AdminPanel';
 
 const App = () => {
   const getUserRoles = () => {
@@ -88,6 +89,10 @@ const App = () => {
         {
           path: "/edit-ticket/:id",
           element: <EditTicket getUserRoles={getUserRoles}/>
+        },
+        {
+          path: "/admin",
+          element: <AdminPanel />
         }
       ]
     },

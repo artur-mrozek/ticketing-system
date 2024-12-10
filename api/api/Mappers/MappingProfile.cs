@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos;
+using api.Dtos.Account;
 using api.Dtos.Comment;
 using api.Dtos.Ticket;
 using api.Models;
@@ -21,6 +22,7 @@ namespace api.Mappers
             CreateMap<Comment, CommentDto>().IncludeMembers(c => c.TicketModel, c => c.AppUser);
             CreateMap<TicketModel, CommentDto>();
             CreateMap<AppUser, CommentDto>();
+            CreateMap<AppUser, UserDto>();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using api.Dtos.Account;
 using api.Interfaces;
 using api.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,13 +23,15 @@ namespace api.Controllers
         private readonly SignInManager<AppUser> _signinManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IPasswordValidator<AppUser> _passwordValidator;
+        private readonly IMapper _mapper;
         public AccountController
         (
             UserManager<AppUser> userManager, 
             ITokenService tokenService, 
             SignInManager<AppUser> signinManager, 
             RoleManager<IdentityRole> roleManager,
-            IPasswordValidator<AppUser> passwordValidator
+            IPasswordValidator<AppUser> passwordValidator,
+            IMapper mapper
         )
         {
             _userManager = userManager;
@@ -36,6 +39,7 @@ namespace api.Controllers
             _signinManager = signinManager;
             _roleManager = roleManager;
             _passwordValidator = passwordValidator;
+            _mapper = mapper;
         }
          [HttpPost("login")]
         public async Task<IActionResult> login(LoginDto loginDto)
@@ -203,6 +207,34 @@ namespace api.Controllers
             }
             
             return BadRequest("Something went wrong " + removePasswordResult.Errors);
+        }
+
+        [HttpGet("{username}")]
+        [Authorize]
+        public async Task<IActionResult> GetUserByName([FromRoute] string username)
+        {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+            var currentUser = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+            var currentUserRoles = await _userManager.GetRolesAsync(currentUser!);
+
+            if(!currentUserRoles.Contains("Admin"))
+                return Unauthorized("You do not have rights to perform this action");
+
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var userDto = _mapper.Map<UserDto>(user);
+            userDto.Roles = userRoles;
+
+            return Ok(userDto);
         }
     }
 }

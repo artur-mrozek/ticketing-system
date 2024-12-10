@@ -14,6 +14,7 @@ import TicketsList from './pages/TicketsList';
 import TicketDetailsPage from './pages/TicketDetailsPage';
 import EditTicket from './pages/EditTicket';
 import AdminPanel from './pages/AdminPanel';
+import UserDetails from './pages/UserDetails';
 
 const App = () => {
   const getUserRoles = () => {
@@ -93,6 +94,10 @@ const App = () => {
         {
           path: "/admin",
           element: <AdminPanel />
+        },
+        {
+          path: "/admin/user/:username",
+          element: <UserDetails />
         }
       ]
     },

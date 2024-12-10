@@ -191,7 +191,8 @@ namespace api.Controllers
 
             var result = await _passwordValidator.ValidateAsync(_userManager, targetUser, dto.NewPassword);
             if(!result.Succeeded) 
-                return BadRequest(result.Errors);
+                //return BadRequest(result.Errors);
+                return new ObjectResult(result.Errors) {StatusCode = 403};
 
             IdentityResult addPasswordResult;
             IdentityResult removePasswordResult = await _userManager.RemovePasswordAsync(targetUser);

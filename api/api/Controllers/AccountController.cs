@@ -140,6 +140,35 @@ namespace api.Controllers
             return BadRequest("Something went wrong");
         }
 
+        [HttpPost("remove-role-from-user")]
+        [Authorize]
+        public async Task<IActionResult> RemoveUserRole([FromBody] AddUserToRoleDto dto)
+        {   
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+            var userRoles = await _userManager.GetRolesAsync(user!);
+            if(!userRoles.Contains("Admin"))
+                return Unauthorized("You do not have rights to perform this action");
+
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+            if (!await _roleManager.RoleExistsAsync(dto.Role)) 
+                return BadRequest("Role not found");
+
+            var targetUser = await _userManager.FindByNameAsync(dto.Username);
+            if (targetUser == null) 
+                return BadRequest("User not found");
+
+            if (!await _userManager.IsInRoleAsync(targetUser, dto.Role))
+                return BadRequest("User does not have this role assigned");
+
+            IdentityResult result = await _userManager.RemoveFromRoleAsync(targetUser, dto.Role);
+            if (result.Succeeded)
+                return Ok($"Removed {dto.Role} from {dto.Username}");
+
+            return BadRequest("Something went wrong");
+        }
+
         [HttpPut("reset-user-password")]
         [Authorize]
         public async Task<IActionResult> ResetUserPassword([FromBody] ResetUserPasswordDto dto)

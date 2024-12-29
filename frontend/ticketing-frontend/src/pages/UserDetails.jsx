@@ -146,105 +146,107 @@ const UserDetails = () => {
   
   return (
     <div className="pt-24 px-6">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">User Details</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-          <div>
-            <strong>ID:</strong> {user.id}
-          </div>
-          <div>
-            <strong>Username:</strong> {user.username}
-          </div>
-          <div>
-            <strong>Email:</strong> {user.email}
-          </div>
-          <div>
-            <strong>Phone Number:</strong> {user.phoneNumber}
-          </div>
-          <div>
-            <strong>First Name:</strong> {user.firstName}
-          </div>
-          <div>
-            <strong>Last Name:</strong> {user.lastName}
-          </div>
-          <div>
-            <strong>Address:</strong> {user.address}
-          </div>
-        </div>
+  <div className="bg-white shadow-md rounded-lg p-6">
+    <h1 className="text-2xl font-bold text-gray-800 mb-6">User Details</h1>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      {/* Kolumna 1 */}
+      <div>
+        <strong>First Name:</strong> {user.firstName}
+      </div>
+      <div>
+        <strong>ID:</strong> {user.id}
+      </div>
+      <div>
+        <strong>Last Name:</strong> {user.lastName}
+      </div>
+      <div>
+        <strong>Username:</strong> {user.username}
+      </div>
+      <div>
+        <strong>Address:</strong> {user.address}
+      </div>
+      <div>
+        <strong>Email:</strong> {user.email}
+      </div>
+      <div>
+        <strong>Phone Number:</strong> {user.phoneNumber}
+      </div>
+    </div>
 
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Roles</h2>
-        <ul className="space-y-2">
-          {user.roles?.map((role) => (
-            <li key={role} className="flex justify-between items-center bg-gray-100 p-3 rounded-lg">
-              <span>{role}</span>
-              <button
-                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                onClick={() => handleRemoveRole(role)}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-6 flex items-center space-x-3">
-          <select
-            value={newRole}
-            onChange={(e) => setNewRole(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select Role</option>
-            {availableRoles.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
-          </select>
+    <h2 className="text-xl font-semibold text-gray-700 mb-4">Roles</h2>
+    <ul className="space-y-2">
+      {user.roles?.map((role) => (
+        <li key={role} className="flex justify-between items-center bg-gray-100 p-3 rounded-lg">
+          <span>{role}</span>
           <button
-            className="px-4 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
-            onClick={handleAddRole}
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+            onClick={() => handleRemoveRole(role)}
           >
-            Add Role
+            Remove
+          </button>
+        </li>
+      ))}
+    </ul>
+
+    <div className="mt-6 flex items-center space-x-3">
+      <select
+        value={newRole}
+        onChange={(e) => setNewRole(e.target.value)}
+        className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="">Select Role</option>
+        {availableRoles.map((role) => (
+          <option key={role} value={role}>
+            {role}
+          </option>
+        ))}
+      </select>
+      <button
+        className="px-4 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+        onClick={handleAddRole}
+      >
+        Add Role
+      </button>
+    </div>
+
+    <button
+      className="mt-6 px-4 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
+      onClick={handleResetPassword}
+    >
+      Reset Password
+    </button>
+  </div>
+  {/* Modal for Reset Password */}
+  {showModal && (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg w-96">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Reset Password</h2>
+        <input
+          type="password"
+          placeholder="Enter new password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-4"
+        />
+        <div className="flex justify-end space-x-3">
+          <button
+            className="px-4 py-2 bg-gray-400 text-white font-semibold rounded-lg hover:bg-gray-500"
+            onClick={() => setShowModal(false)}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+            onClick={handleSubmitNewPassword}
+          >
+            Submit
           </button>
         </div>
-
-        <button
-          className="mt-6 px-4 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"
-          onClick={handleResetPassword}
-        >
-          Reset Password
-        </button>
       </div>
-      {/* Modal for Reset Password */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg w-96">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Reset Password</h2>
-            <input
-              type="password"
-              placeholder="Enter new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-            />
-            <div className="flex justify-end space-x-3">
-              <button
-                className="px-4 py-2 bg-gray-400 text-white font-semibold rounded-lg hover:bg-gray-500"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
-                onClick={handleSubmitNewPassword}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
+  )}
+</div>
+
   );
 }
 

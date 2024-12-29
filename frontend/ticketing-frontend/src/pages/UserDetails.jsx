@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
+import Spinner from '../components/Spinner';
 
 const UserDetails = () => {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState([]);
   const [newRole, setNewRole] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -33,6 +35,8 @@ const UserDetails = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
   }
 
@@ -145,6 +149,10 @@ const UserDetails = () => {
   },[])
   
   return (
+    <>
+    {loading
+    ? <Spinner loading={loading} />
+    :
     <div className="pt-24 px-6">
   <div className="bg-white shadow-md rounded-lg p-6">
     <h1 className="text-2xl font-bold text-gray-800 mb-6">User Details</h1>
@@ -246,7 +254,8 @@ const UserDetails = () => {
     </div>
   )}
 </div>
-
+    }
+</>
   );
 }
 

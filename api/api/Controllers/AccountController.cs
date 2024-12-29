@@ -210,6 +210,27 @@ namespace api.Controllers
             return BadRequest("Something went wrong " + removePasswordResult.Errors);
         }
 
+        [HttpPut("change-my-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangeMyPassword([FromBody] ChangeMyPasswordDto dto)
+        {
+            if(!ModelState.IsValid)
+                    return BadRequest(ModelState);
+            
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
+
+            if(user == null)
+                return BadRequest();
+
+            var result = await _userManager.ChangePasswordAsync(user, dto.OldPassword, dto.NewPassword);
+            if (!result.Succeeded)
+            {
+                return new ObjectResult(result.Errors) {StatusCode = 403};
+            }
+
+            return Ok("Password changed successfully.");
+        }
+
         [HttpGet("{username}")]
         [Authorize]
         public async Task<IActionResult> GetUserByName([FromRoute] string username)

@@ -90,7 +90,7 @@ builder.Services.AddCors(options =>
             options.AddPolicy(name: MyAllowSpecificOrigins,
                                 policy =>
                                 {
-                                    policy.WithOrigins("http://localhost:5173")
+                                    policy.WithOrigins("http://localhost:5000")
                                     .AllowAnyMethod()
                                     .AllowAnyHeader()
                                     .AllowCredentials();
@@ -104,6 +104,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using var serviceScope = app.Services.CreateScope();
+    using var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDBContext>();
+    dbContext?.Database.Migrate();
 }
 
 app.UseHttpsRedirection();

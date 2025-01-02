@@ -75,12 +75,12 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
           <div><strong>ID:</strong> {ticket.id}</div>
           <div><strong>Category:</strong> {ticket.category}</div>
           <div className='break-words'><strong>Title:</strong> {ticket.title}</div>
-          <div className='break-words'><strong>Description:</strong> {ticket.description}</div>
           <div><strong>Created On:</strong> {convertDateTime(ticket.createdOn)}</div>
           <div><strong>Status:</strong> {ticket.status}</div>
           <div><strong>Line:</strong> {ticket.line}</div>
           <div><strong>Priority:</strong> {ticket.priority}</div>
           <div><strong>Owner:</strong> {ticket.owner}</div>
+          <div className='break-words'><strong>Description:</strong> {ticket.description}</div>
         </div>
       </div>
 

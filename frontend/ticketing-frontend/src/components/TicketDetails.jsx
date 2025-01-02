@@ -17,7 +17,8 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
           'Authorization': `Bearer ${Cookies.get("token")}`
       },
       body: JSON.stringify({
-        "isTaking": true
+        "isTaking": true,
+        "status": "In Progress"
         })
       })
       if (res.ok) {

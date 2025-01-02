@@ -82,7 +82,7 @@ const App = () => {
         },
         {
           path: "/tickets",
-          element: <TicketsList convertDateTime={convertDateTime}/>
+          element: <TicketsList convertDateTime={convertDateTime} getUserRoles={getUserRoles}/>
         },
         {
           path: "/ticket/:id",

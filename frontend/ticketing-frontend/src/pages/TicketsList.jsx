@@ -4,14 +4,19 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Spinner from '../components/Spinner';
 
-const TicketsList = ({convertDateTime}) => {
+const TicketsList = ({convertDateTime, getUserRoles}) => {
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
     const lineParam = searchParams.get("Line");
+    const userRoles = getUserRoles()
     const navigate = useNavigate();
 
     useEffect(() => {
+      if (!userRoles.includes("L1") && !userRoles.includes("L2") &&!userRoles.includes("L3"))
+      {
+        navigate("/tickets")
+      }
         const fetchTickets = async () => {
         try {
             if (lineParam == "L1" || lineParam == "L2" || lineParam == "L3"){

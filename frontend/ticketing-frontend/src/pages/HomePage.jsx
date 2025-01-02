@@ -12,7 +12,7 @@ const HomePage = ({getUserRoles}) => {
       { name: 'Security Breach', icon: '🔒' },
       { name: 'Performance Issues', icon: '⚡' },
       { name: 'System Updates', icon: '🔄' },
-      { name: 'Data Backup & Recovery', icon: '💾' },
+      { name: 'Data Backup and Recovery', icon: '💾' },
       { name: 'User Access Management', icon: '👥' },
     ];
     

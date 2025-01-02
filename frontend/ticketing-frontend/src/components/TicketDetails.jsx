@@ -57,6 +57,27 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
     }
   }
 
+  const closeTicket = async () => {
+    try {
+      const res = await fetch(`/api/ticket/${ticket.id}`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get("token")}`
+        },
+        body: JSON.stringify({
+          "status": "Closed"
+        })
+      })
+      if (res.ok) {
+        fetchTicket();
+        toast.success("You closed the ticket succesfully!")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 mb-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-4">Ticket Details</h1>
@@ -100,6 +121,12 @@ const TicketDetails = ({ticket, convertDateTime, getUserRoles, fetchTicket, getU
               <button disabled className="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">Escalate</button>
             :
               <button onClick={() => {escalateTicket()}} className="bg-red-600 text-white px-4 py-2 rounded">Escalate</button>
+            }
+            {ticket.status == "closed"
+            ?
+              <button disabled className="bg-gray-300 text-white px-4 py-2 rounded cursor-not-allowed">Close</button>
+            :
+              <button onClick={() => {closeTicket()}} className="bg-blue-600 text-white px-4 py-2 rounded">Close</button>
             }
           </div>
         )

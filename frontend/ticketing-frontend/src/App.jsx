@@ -1,6 +1,6 @@
 import React from 'react'
-import { 
-  createBrowserRouter, 
+import {
+  createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
 import Cookies from 'js-cookie';
@@ -16,12 +16,12 @@ import EditTicket from './pages/EditTicket';
 import AdminPanel from './pages/AdminPanel';
 import UserDetails from './pages/UserDetails';
 import ChangePassword from './pages/ChangePassword';
+import ErrorPage from './pages/ErrorPage';
 
 const App = () => {
   const getUserRoles = () => {
     const token = Cookies.get("token")
-    if (token)
-    {
+    if (token) {
       const decodedToken = jwtDecode(token);
       const roles = decodedToken.Role;
       return roles;
@@ -32,8 +32,7 @@ const App = () => {
 
   const getUsername = () => {
     const token = Cookies.get("token")
-    if (token)
-    {
+    if (token) {
       const decodedToken = jwtDecode(token);
       const username = decodedToken.given_name;
       return username;
@@ -62,19 +61,19 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: <LoginPage/>
+      element: <LoginPage />
     },
     {
       path: "/register",
-      element: <RegisterPage/>
+      element: <RegisterPage />
     },
     {
       path: "/",
-      element: <MainLayout getUserRoles={getUserRoles}/>,
+      element: <MainLayout getUserRoles={getUserRoles} />,
       children: [
         {
           path: "/",
-          element: <HomePage getUserRoles={getUserRoles}/>
+          element: <HomePage getUserRoles={getUserRoles} />
         },
         {
           path: "/send-ticket",
@@ -82,15 +81,15 @@ const App = () => {
         },
         {
           path: "/tickets",
-          element: <TicketsList convertDateTime={convertDateTime} getUserRoles={getUserRoles}/>
+          element: <TicketsList convertDateTime={convertDateTime} getUserRoles={getUserRoles} />
         },
         {
           path: "/ticket/:id",
-          element: <TicketDetailsPage convertDateTime={convertDateTime} getUserRoles={getUserRoles} getUsername={getUsername}/>
+          element: <TicketDetailsPage convertDateTime={convertDateTime} getUserRoles={getUserRoles} getUsername={getUsername} />
         },
         {
           path: "/edit-ticket/:id",
-          element: <EditTicket getUserRoles={getUserRoles}/>
+          element: <EditTicket getUserRoles={getUserRoles} />
         },
         {
           path: "/change-password",
@@ -103,6 +102,10 @@ const App = () => {
         {
           path: "/admin/user/:username",
           element: <UserDetails />
+        },
+        {
+          path: "*",
+          element: <ErrorPage />
         }
       ]
     },

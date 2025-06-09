@@ -17,7 +17,7 @@ namespace api.Controllers
     [Route("api/ticket")]
     [ApiController]
     public class TicketController : ControllerBase
-    {   
+    {
         private readonly ITicketRepository _ticketRepo;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
@@ -33,29 +33,35 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            if(!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
             var userRoles = await _userManager.GetRolesAsync(user!);
 
-            var tickets = await _ticketRepo.GetAll(query, userRoles, user);
-            var ticketsDto = tickets.Select(t => _mapper.Map<TicketDto>(t));
-            //ticketsDto = ticketsDto.Where(ticket => roles.Contains(ticket.Line));
-            return Ok(ticketsDto);
+            var pagedResult = await _ticketRepo.GetAll(query, userRoles, user);
+
+            var dtoResult = new PagedResult<TicketDto>
+            {
+                Items = pagedResult.Items.Select(t => _mapper.Map<TicketDto>(t)).ToList(),
+                TotalCount = pagedResult.TotalCount
+            };
+
+            return Ok(dtoResult);
         }
+
 
         [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            if(!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var ticket = await _ticketRepo.GetById(id);
-            
-            
-            if(ticket == null)
+
+
+            if (ticket == null)
             {
                 return NotFound();
             }
@@ -63,7 +69,7 @@ namespace api.Controllers
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
             var userRoles = await _userManager.GetRolesAsync(user!);
 
-            if(userRoles.Contains(ticket.Line) || ticket.AppUser == user)
+            if (userRoles.Contains(ticket.Line) || ticket.AppUser == user)
             {
                 return Ok(_mapper.Map<TicketDto>(ticket));
             }
@@ -75,8 +81,8 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> CreateTicket([FromBody] TicketCreateRequestDto ticketDto)
         {
-            if(!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var ticketModel = _mapper.Map<TicketModel>(ticketDto);
             var username = User.FindFirst(ClaimTypes.GivenName)!.Value;
@@ -84,8 +90,8 @@ namespace api.Controllers
             ticketModel.AppUser = user!;
             await _ticketRepo.Create(ticketModel);
             return CreatedAtAction(
-                nameof(GetById), 
-                new { id = ticketModel.Id}, 
+                nameof(GetById),
+                new { id = ticketModel.Id },
                 _mapper.Map<TicketDto>(ticketModel)
                 );
         }
@@ -96,15 +102,15 @@ namespace api.Controllers
         {
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
             var userRoles = await _userManager.GetRolesAsync(user!);
-            if(!userRoles.Contains("L1") && !userRoles.Contains("L2") && !userRoles.Contains("L3"))
+            if (!userRoles.Contains("L1") && !userRoles.Contains("L2") && !userRoles.Contains("L3"))
                 return Unauthorized("You do not have rights to perform this action");
 
-            if(!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var username = User.FindFirst(ClaimTypes.GivenName)!.Value;
             var ticket = await _ticketRepo.Update(id, ticketDto, username);
-            
+
             if (ticket == null)
             {
                 return NotFound();
@@ -112,19 +118,19 @@ namespace api.Controllers
 
             return Ok(_mapper.Map<TicketDto>(ticket, opt => opt.Items["Username"] = ticket.AppUser.UserName));
         }
-        
+
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteTicket([FromRoute] int id)
         {
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.GivenName)!.Value);
             var userRoles = await _userManager.GetRolesAsync(user!);
-            if(!userRoles.Contains("L1") && !userRoles.Contains("L2") && !userRoles.Contains("L3"))
+            if (!userRoles.Contains("L1") && !userRoles.Contains("L2") && !userRoles.Contains("L3"))
                 return Unauthorized("You do not have rights to perform this action");
-                   
-            if(!ModelState.IsValid)
-                    return BadRequest(ModelState);
-                    
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var ticket = await _ticketRepo.Delete(id);
             if (ticket == null)
             {

@@ -20,7 +20,7 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<TicketModel>> GetAll(QueryObject query, IList<string> userRoles, AppUser? user)
+        public async Task<PagedResult<TicketModel>> GetAll(QueryObject query, IList<string> userRoles, AppUser? user)
         {
             var tickets = _context.TicketModels.Include(t => t.AppUser).Include(t => t.Comments).ThenInclude(c => c.AppUser).AsQueryable();
 
@@ -28,7 +28,8 @@ namespace api.Repository
             if (userRoles.Contains("L1") || userRoles.Contains("L2") || userRoles.Contains("L3"))
             {
                 tickets = tickets.Where(ticket => userRoles.Contains(ticket.Line));
-            } else
+            }
+            else
             {
                 tickets = tickets.Where(ticket => ticket.AppUser == user);
             }
@@ -43,11 +44,21 @@ namespace api.Repository
                 tickets = tickets.Where(ticket => ticket.Line == query.Line);
             }
 
+            var totalCount = await tickets.CountAsync();
+
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
 
-            tickets = tickets.OrderByDescending(o => o.CreatedOn);
-            
-            return await tickets.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            var pagedTickets = await tickets
+                .OrderByDescending(t => t.CreatedOn)
+                .Skip(skipNumber)
+                .Take(query.PageSize)
+                .ToListAsync();
+
+            return new PagedResult<TicketModel>
+            {
+                Items = pagedTickets,
+                TotalCount = totalCount
+            };
         }
 
         public async Task<TicketModel?> GetById(int id)

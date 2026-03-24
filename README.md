@@ -1,4 +1,5 @@
 # ticketing-system
+A full-stack web-based ticketing system using ASP.NET Core, React, MSSQL and Docker to manage and track technical support requests.
 
 To run this project, you need to create https cert in current user directory, eg:
 ```
